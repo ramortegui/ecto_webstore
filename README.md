@@ -1,6 +1,6 @@
 # WebStore
 
-**TODO: Add description**
+Ecto database wrapper for e-commerce-db
 
 ## Installation
 
