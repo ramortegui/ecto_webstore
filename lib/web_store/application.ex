@@ -8,8 +8,7 @@ defmodule WebStore.Application do
   def start(_type, _args) do
     # List all child processes to be supervised
     children = [
-      # Starts a worker by calling: WebStore.Worker.start_link(arg)
-      # {WebStore.Worker, arg},
+      WebStore.Repo
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

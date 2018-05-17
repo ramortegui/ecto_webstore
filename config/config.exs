@@ -2,6 +2,17 @@
 # and its dependencies with the aid of the Mix.Config module.
 use Mix.Config
 
+config :web_store, WebStore.Repo,
+  adapter: Ecto.Adapters.Postgres,
+  database: "web_store_repo",
+  username: "postgres",
+  password: "",
+  hostname: "localhost"
+
+config :web_store,
+  ecto_repos: [WebStore.Repo]
+
+
 # This configuration is loaded before any dependency and is restricted
 # to this project. If another project depends on this project, this
 # file won't be loaded nor affect the parent project. For this reason,
