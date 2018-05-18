@@ -24,6 +24,8 @@ defmodule WebStore.Product do
       join_through: "product_tags",
       join_keys: [product_sku: :sku, tag_id: :id]
     )
+
+    timestamps()
   end
 
   def changeset(product, params \\ %{}) do
@@ -35,7 +37,7 @@ defmodule WebStore.Product do
       :regular_price,
       :discount_price,
       :quantity,
-      :taxable,
+      :taxable
     ])
     |> Ecto.Changeset.cast_assoc(:product_status)
     |> Ecto.Changeset.cast_assoc(:categories)

@@ -3,6 +3,7 @@ defmodule WebStore.ProductStatus do
 
   schema "product_statuses" do
     field(:name, :string)
+    timestamps()
   end
 
   def changeset(product_status, params \\ %{}) do

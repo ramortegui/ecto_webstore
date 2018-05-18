@@ -3,6 +3,7 @@ defmodule WebStore.Tag do
 
   schema "tags" do
     field(:name, :string)
+    timestamps()
   end
 
   def changeset(tag, params \\ %{}) do

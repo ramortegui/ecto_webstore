@@ -4,6 +4,7 @@ defmodule WebStore.Role do
   schema "roles" do
     field(:name, :string)
     many_to_many(:users, WebStore.User, join_through: "user_roles")
+    timestamps()
   end
 
   def changeset(role, params \\ %{}) do

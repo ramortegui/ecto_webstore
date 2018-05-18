@@ -3,6 +3,7 @@ defmodule WebStore.Category do
 
   schema "categories" do
     field(:name, :string)
+    timestamps()
   end
 
   def changeset(category, params \\ %{}) do
