@@ -2,7 +2,7 @@ defmodule WebStore.Category do
   use Ecto.Schema
 
   schema "categories" do
-    field :name, :string
+    field(:name, :string)
   end
 
   def changeset(category, params \\ %{}) do

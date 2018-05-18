@@ -9,9 +9,7 @@ config :web_store, WebStore.Repo,
   password: "",
   hostname: "localhost"
 
-config :web_store,
-  ecto_repos: [WebStore.Repo]
-
+config :web_store, ecto_repos: [WebStore.Repo]
 
 # This configuration is loaded before any dependency and is restricted
 # to this project. If another project depends on this project, this
