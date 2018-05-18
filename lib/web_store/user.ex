@@ -6,7 +6,7 @@ defmodule WebStore.User do
     field(:first_name, :string)
     field(:last_name, :string)
     field(:active, :boolean)
-    many_to_many :roles, WebStore.Role, join_through: "user_roles"
+    many_to_many(:roles, WebStore.Role, join_through: "user_roles")
   end
 
   def changeset(user, params \\ %{}) do
