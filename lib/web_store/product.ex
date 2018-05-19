@@ -1,36 +1,24 @@
 defmodule WebStore.Product do
   use Ecto.Schema
+  alias WebStore.{Repo, Category, Tag, ProductTag, ProductCategory, ProductStatus}
 
-  @primary_key {:sku, :string, []}
   schema "products" do
+    field(:sku, :string)
     field(:name, :string)
     field(:description, :string)
     field(:regular_price, :float)
     field(:discount_price, :float)
     field(:quantity, :integer)
     field(:taxable, :boolean)
-    belongs_to(:product_status, WebStore.ProductStatus)
-
-    many_to_many(
-      :categories,
-      WebStore.Category,
-      join_through: "product_categories",
-      join_keys: [product_sku: :sku, category_id: :id]
-    )
-
-    many_to_many(
-      :tags,
-      WebStore.Tag,
-      join_through: "product_tags",
-      join_keys: [product_sku: :sku, tag_id: :id]
-    )
-
+    belongs_to(:product_status, ProductStatus)
+    many_to_many(:categories, Category, join_through: ProductCategory)
+    many_to_many(:tags, Tag, join_through: ProductTag)
     timestamps()
   end
 
   def changeset(product, params \\ %{}) do
     product
-    |> WebStore.Repo.preload([:product_status, :categories, :tags])
+    |> Repo.preload([:product_status, :categories, :tags])
     |> Ecto.Changeset.cast(params, [
       :name,
       :description,

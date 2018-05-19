@@ -3,7 +3,7 @@ defmodule WebStore.Role do
 
   schema "roles" do
     field(:name, :string)
-    many_to_many(:users, WebStore.User, join_through: "user_roles")
+    many_to_many(:users, WebStore.User, join_through: WebStore.UserRole)
     timestamps()
   end
 
