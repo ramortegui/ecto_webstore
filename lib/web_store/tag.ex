@@ -3,6 +3,7 @@ defmodule WebStore.Tag do
 
   schema "tags" do
     field(:name, :string)
+    many_to_many(:products, WebStore.Product, join_through: WebStore.ProductTag)
     timestamps()
   end
 
