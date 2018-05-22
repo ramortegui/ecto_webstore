@@ -71,7 +71,8 @@ ALTER SEQUENCE categories_id_seq OWNED BY categories.id;
 --
 
 CREATE TABLE cc_transactions (
-    code character varying(255) NOT NULL,
+    id integer NOT NULL,
+    code character varying(255),
     order_id integer NOT NULL,
     transdate timestamp with time zone,
     processor character varying(255) NOT NULL,
@@ -83,6 +84,25 @@ CREATE TABLE cc_transactions (
     inserted_at timestamp with time zone NOT NULL,
     updated_at timestamp with time zone NOT NULL
 );
+
+
+--
+-- Name: cc_transactions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE cc_transactions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: cc_transactions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE cc_transactions_id_seq OWNED BY cc_transactions.id;
 
 
 --
@@ -127,8 +147,8 @@ ALTER SEQUENCE coupons_id_seq OWNED BY coupons.id;
 --
 
 CREATE TABLE order_products (
-    product_id character varying(255) NOT NULL,
-    order_id integer NOT NULL,
+    id integer NOT NULL,
+    order_id integer,
     sku character varying(255) NOT NULL,
     name character varying(255) NOT NULL,
     description text,
@@ -141,12 +161,31 @@ CREATE TABLE order_products (
 
 
 --
+-- Name: order_products_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE order_products_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: order_products_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE order_products_id_seq OWNED BY order_products.id;
+
+
+--
 -- Name: product_categories; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE product_categories (
     category_id integer NOT NULL,
-    product_id character varying(255) NOT NULL,
+    product_id integer NOT NULL,
     inserted_at timestamp with time zone NOT NULL,
     updated_at timestamp with time zone NOT NULL
 );
@@ -188,7 +227,7 @@ ALTER SEQUENCE product_statuses_id_seq OWNED BY product_statuses.id;
 --
 
 CREATE TABLE product_tags (
-    product_id character varying(255) NOT NULL,
+    product_id integer NOT NULL,
     tag_id integer NOT NULL,
     inserted_at timestamp with time zone NOT NULL,
     updated_at timestamp with time zone NOT NULL
@@ -300,6 +339,16 @@ ALTER SEQUENCE sales_orders_id_seq OWNED BY sales_orders.id;
 
 
 --
+-- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE schema_migrations (
+    version bigint NOT NULL,
+    inserted_at timestamp without time zone
+);
+
+
+--
 -- Name: sessions; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -396,10 +445,24 @@ ALTER TABLE ONLY categories ALTER COLUMN id SET DEFAULT nextval('categories_id_s
 
 
 --
+-- Name: cc_transactions id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY cc_transactions ALTER COLUMN id SET DEFAULT nextval('cc_transactions_id_seq'::regclass);
+
+
+--
 -- Name: coupons id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY coupons ALTER COLUMN id SET DEFAULT nextval('coupons_id_seq'::regclass);
+
+
+--
+-- Name: order_products id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY order_products ALTER COLUMN id SET DEFAULT nextval('order_products_id_seq'::regclass);
 
 
 --
@@ -457,7 +520,7 @@ ALTER TABLE ONLY categories
 --
 
 ALTER TABLE ONLY cc_transactions
-    ADD CONSTRAINT pk_cc_transactions PRIMARY KEY (code);
+    ADD CONSTRAINT pk_cc_transactions PRIMARY KEY (id);
 
 
 --
@@ -473,7 +536,7 @@ ALTER TABLE ONLY coupons
 --
 
 ALTER TABLE ONLY order_products
-    ADD CONSTRAINT pk_order_products PRIMARY KEY (product_id, order_id);
+    ADD CONSTRAINT pk_order_products PRIMARY KEY (id);
 
 
 --
@@ -557,6 +620,14 @@ ALTER TABLE ONLY users
 
 
 --
+-- Name: schema_migrations schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY schema_migrations
+    ADD CONSTRAINT schema_migrations_pkey PRIMARY KEY (version);
+
+
+--
 -- Name: categories fk_category_parent_category; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -578,6 +649,22 @@ ALTER TABLE ONLY product_categories
 
 ALTER TABLE ONLY sales_orders
     ADD CONSTRAINT fk_coupon_order FOREIGN KEY (coupon_id) REFERENCES coupons(id);
+
+
+--
+-- Name: product_tags fk_producs_product_tags; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY product_tags
+    ADD CONSTRAINT fk_producs_product_tags FOREIGN KEY (product_id) REFERENCES products(id);
+
+
+--
+-- Name: product_categories fk_product_product_category; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY product_categories
+    ADD CONSTRAINT fk_product_product_category FOREIGN KEY (product_id) REFERENCES products(id);
 
 
 --
