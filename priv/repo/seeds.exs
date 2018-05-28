@@ -9,7 +9,7 @@ role2 = Repo.insert!(role_admin)
 user = %User{email: "user@domain.com", first_name: "Ruben", last_name: "Amortegui",active: true, roles: [role1, role2]}
 
 user_changeset = User.changeset(user)
-Repo.insert(user_changeset)
+user = Repo.insert!(user_changeset)
 
 tag = %Tag{name: "cleareance"}
 tag = Repo.insert!(tag)
@@ -33,4 +33,9 @@ coupon_changeset = Coupon.changeset(coupon)
 
 session = %Session{ id: "session_id", data: "{}" }
 session_changeset = Session.changeset(session)
-Repo.insert!(session_changeset)
+session = Repo.insert!(session_changeset)
+
+current_date = Date.utc_today
+sales_order = %SalesOrder{order_date: current_date, total: 11.0, user: user, session: session}
+sales_order_changeset = SalesOrder.changeset(sales_order)
+Repo.insert!(sales_order_changeset)
